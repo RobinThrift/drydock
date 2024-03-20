@@ -30,7 +30,7 @@ clean:
 release tag:
     just changelog {{ tag }}
     git add CHANGELOG.md
-    git commit -m "release: Releaseing version {{tag}}"
+    git commit -m "release: Releasing version {{tag}}"
     git tag {{tag}}
     git push
     git push origin {{tag}}
