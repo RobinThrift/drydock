@@ -11,7 +11,7 @@ header = """
 # https://keats.github.io/tera/docs/#introduction
 body = """
 {% if version -%}
-    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/spacefleet-dev/drydock/releases/tag/{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
+    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/RobinThrift/drydock/releases/tag/{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
 {% endif -%}
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | upper_first }}
@@ -95,5 +95,5 @@ topo_order = false
 sort_commits = "oldest"
 
 [remote.github]
-owner = "spacefleet-dev"
+owner = "RobinThrift"
 repo = "drydock"

@@ -1,10 +1,10 @@
 # DryDock
 ### Simple Scaffolding Library for Go
 
-[![MIT License](https://img.shields.io/github/license/spacefleet-dev/drydock?style=flat-square)](https://github.com/spacefleet-dev/drydock/blob/main/LICENSE)
-![CI](https://github.com/spacefleet-dev/drydock/actions/workflows/ci.yaml/badge.svg)
-[![Go Reference](https://pkg.go.dev/badge/github.com/spacefleet-dev/drydock.svg)](https://pkg.go.dev/github.com/spacefleet-dev/drydock)
-[![Latest Release](https://img.shields.io/github/v/tag/spacefleet-dev/drydock?sort=semver&style=flat-square)](https://github.com/spacefleet-dev/drydock/releases/latest)
+[![MIT License](https://img.shields.io/github/license/RobinThrift/drydock?style=flat-square)](https://github.com/RobinThrift/drydock/blob/main/LICENSE)
+![CI](https://github.com/RobinThrift/drydock/actions/workflows/ci.yaml/badge.svg)
+[![Go Reference](https://pkg.go.dev/badge/github.com/RobinThrift/drydock.svg)](https://pkg.go.dev/github.com/RobinThrift/drydock)
+[![Latest Release](https://img.shields.io/github/v/tag/RobinThrift/drydock?sort=semver&style=flat-square)](https://github.com/RobinThrift/drydock/releases/latest)
 
 
 
@@ -35,4 +35,4 @@ err := g.Generate(
 
 ## License
 
-[MIT](https://github.com/spacefleet-dev/drydock/blob/main/LICENSE)
+[MIT](https://github.com/RobinThrift/drydock/blob/main/LICENSE)

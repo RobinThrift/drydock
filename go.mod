@@ -1,4 +1,4 @@
-module github.com/spacefleet-dev/drydock
+module github.com/RobinThrift/drydock
 
 go 1.22.1
 
