@@ -14,6 +14,10 @@ func Dir(name string, entries ...File) Directory {
 func DirP(name string, entries ...File) Directory {
 	dirs := strings.Split(name, "/")
 
+	if dirs[0] == "." {
+		dirs = dirs[1:]
+	}
+
 	final := Dir(dirs[len(dirs)-1], entries...)
 
 	for i := len(dirs) - 2; i >= 0; i-- {

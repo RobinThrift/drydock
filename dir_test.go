@@ -29,6 +29,12 @@ func TestDirP(t *testing.T) {
 			entries: []File{PlainFile("fileA", "fileA contents")},
 			exp:     Dir("Level-0", Dir("Level-1", Dir("Level-2", PlainFile("fileA", "fileA contents")))),
 		},
+		{
+			name:    "Dot Directory",
+			input:   "./Level-0/Level-1",
+			entries: []File{PlainFile("FileNameA", "")},
+			exp:     Dir("Level-0", Dir("Level-1", PlainFile("FileNameA", ""))),
+		},
 	}
 
 	for _, tt := range tt {
