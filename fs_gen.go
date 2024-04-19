@@ -47,11 +47,6 @@ func (g *FSGenerator) Generate(ctx context.Context, files ...File) error {
 		}
 	}
 
-	// rootDir, err := filepath.Abs(g.OutputDir)
-	// if err != nil {
-	// 	return err
-	// }
-
 	gendirs := make([]*gendir, 0, len(files))
 	genfiles := make([]*genfile, 0, len(files))
 
