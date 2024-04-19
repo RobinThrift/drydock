@@ -2,8 +2,6 @@ package drydock
 
 import (
 	"strings"
-
-	"golang.org/x/exp/slices"
 )
 
 func Dir(name string, entries ...File) Directory {
@@ -11,16 +9,15 @@ func Dir(name string, entries ...File) Directory {
 }
 
 // DirP is like [Dir] but [name] can be a file path and every
-// segment will be created as a directory, similar to [os.Mkdirp] or
+// segment will be created as a directory, similar to [os.MkdirAll] or
 // the `mkdir -p` command.
 func DirP(name string, entries ...File) Directory {
 	dirs := strings.Split(name, "/")
-	slices.Reverse(dirs)
 
 	final := Dir(dirs[len(dirs)-1], entries...)
 
-	for _, d := range dirs[:len(dirs)-1] {
-		final = Dir(d, final)
+	for i := len(dirs) - 2; i >= 0; i-- {
+		final = Dir(dirs[i], final)
 	}
 
 	return final
