@@ -8,9 +8,10 @@ import (
 
 func TestDirP(t *testing.T) {
 	tt := []struct {
-		name  string
-		input string
-		exp   Directory
+		name    string
+		input   string
+		entries []File
+		exp     Directory
 	}{
 		{
 			name:  "Single Directory",
@@ -22,11 +23,17 @@ func TestDirP(t *testing.T) {
 			input: "Level-0/Level-1/Level-2",
 			exp:   Dir("Level-0", Dir("Level-1", Dir("Level-2"))),
 		},
+		{
+			name:    "Nested Dir With Files",
+			input:   "Level-0/Level-1/Level-2",
+			entries: []File{PlainFile("fileA", "fileA contents")},
+			exp:     Dir("Level-0", Dir("Level-1", Dir("Level-2", PlainFile("fileA", "fileA contents")))),
+		},
 	}
 
 	for _, tt := range tt {
 		t.Run(tt.name, func(t *testing.T) {
-			actual := DirP(tt.input)
+			actual := DirP(tt.input, tt.entries...)
 			assert.Equal(t, tt.exp, actual)
 		})
 	}
