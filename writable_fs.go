@@ -59,6 +59,18 @@ func MkWritableDirFS(dir string) (WritableFS, error) {
 	return NewWritableDirFS(dir), nil
 }
 
+// MkpWritableDirFS is like [MkWritableDirFS] but will create the directory and any parent directory if it doesn't exist.
+func MkpWritableDirFS(dir string) (WritableFS, error) {
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		if !errors.Is(err, fs.ErrExist) {
+			return nil, err
+		}
+	}
+
+	return NewWritableDirFS(dir), nil
+}
+
 func (wfs *writableDirFS) Mkdir(name string, perm fs.FileMode) error {
 	err := os.Mkdir(path.Join(wfs.baseDir, name), perm)
 	return err
