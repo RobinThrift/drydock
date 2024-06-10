@@ -39,7 +39,7 @@ changelog tag:
     git-cliff --config cliff.toml --prepend CHANGELOG.md --unreleased --tag {{ tag }}
 
 _install-tools:
-    @just _install-tool golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint
+    @[ -x .bin/golangci-lint ] || gobin={{ gobin }} go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
     @just _install-tool gotestsum gotest.tools/gotestsum
     @just _install-tool staticcheck honnef.co/go/tools/cmd/staticcheck
 
