@@ -50,7 +50,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Run Tests
       run: |
-        just test-ci
+        just test-ci github-actions
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
