@@ -15,25 +15,25 @@
 ## Usage Example
 
 ```go
-g := &FSGenerator{
-	FS: NewWritableDirFS("out"),
-}
+outfs := NewOSOutputFS("out")
 
-err := g.Generate(
+g := NewGenerator(outfs)
+
+err = g.Generate(
     context.Background(),
-	PlainFile("README.md", "# drydock"),
-	Dir("bin",
-		Dir("cli",
-			PlainFile("main.go", "package main"),
-		),
-	),
-	Dir("pkg",
-		PlainFile("README.md", "how to use this thing"),
-		Dir("cli",
-			PlainFile("cli.go", "package cli..."),
-			PlainFile("run.go", "package cli...run..."),
-		),
-	),
+    PlainFile("README.md", "# drydock"),
+    Dir("bin",
+        Dir("cli",
+            PlainFile("main.go", "package main"),
+        ),
+    ),
+    Dir("pkg",
+        PlainFile("README.md", "how to use this thing"),
+        Dir("cli",
+            PlainFile("cli.go", "package cli..."),
+            PlainFile("run.go", "package cli...run..."),
+        ),
+    ),
 )
 ````
 
