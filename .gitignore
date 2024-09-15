@@ -3,6 +3,6 @@
 .idea
 .vscode
 
-.gobin
+.bin
 
 *.junit.xml

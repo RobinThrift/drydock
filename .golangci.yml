@@ -36,7 +36,7 @@ linters:
   - contextcheck
   - containedctx
   - exhaustive
-  - exportloopref
+  - copyloopvar
   - gocheckcompilerdirectives
   - gocognit
   - nestif
