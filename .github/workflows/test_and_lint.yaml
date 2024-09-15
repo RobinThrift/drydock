@@ -23,13 +23,9 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version-file: 'go.mod'
-    - name: Install just
-      uses: kodeshack/action-install-gh-release@v1
+    - uses: RobinThrift/action-setup-just@v1
       with:
-        owner: casey
-        repo: just
-        version: '1.35.0'
-        test: just --version
+        just-version: '1.35.0'
     - name: Lint
       run: |
         just lint-ci
@@ -49,13 +45,9 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version-file: 'go.mod'
-    - name: Install just
-      uses: kodeshack/action-install-gh-release@v1
+    - uses: RobinThrift/action-setup-just@v1
       with:
-        owner: casey
-        repo: just
-        version: '1.35.0'
-        test: just --version
+        just-version: '1.35.0'
     - name: Run Tests
       run: |
         just test-ci github-actions
