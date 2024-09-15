@@ -2,7 +2,7 @@
 ### Simple Scaffolding Library
 
 [![MIT License](https://img.shields.io/github/license/RobinThrift/drydock?style=flat-square)](https://github.com/RobinThrift/drydock/blob/main/LICENSE)
-![CI](https://github.com/RobinThrift/drydock/actions/workflows/ci.yaml/badge.svg)
+[![test_and_lint](https://github.com/RobinThrift/drydock/actions/workflows/test_and_lint.yaml/badge.svg)](https://github.com/RobinThrift/drydock/actions/workflows/test_and_lint.yaml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/RobinThrift/drydock.svg)](https://pkg.go.dev/github.com/RobinThrift/drydock)
 [![Latest Release](https://img.shields.io/github/v/tag/RobinThrift/drydock?sort=semver&style=flat-square)](https://github.com/RobinThrift/drydock/releases/latest)
 
