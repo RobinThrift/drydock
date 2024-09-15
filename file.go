@@ -1,12 +1,11 @@
 package drydock
 
 import (
-	"errors"
 	"io"
-	"os"
 	"text/template"
 )
 
+// A PlainFile with the given contents.
 func PlainFile(name string, contents string) File {
 	return &plainFile{name: name, contents: []byte(contents)}
 }
@@ -30,101 +29,84 @@ func (f *plainFile) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), nil
 }
 
-func TemplateFile(name string, template string, data any) File {
-	return &tmplFile{name: name, template: template, data: data}
-}
-
-type tmplFile struct {
-	name     string
-	template string
-	data     any
-}
-
-func (f *tmplFile) Name() string {
-	return f.name
-}
-
-// WriteTo implements [io.WriterTo]
-func (f *tmplFile) WriteTo(w io.Writer) (int64, error) {
-	t, err := template.New(f.name).Parse(f.template)
-	if err != nil {
-		return 0, err
-	}
-
-	return 0, t.Execute(w, f.data)
-}
-
 type Template interface {
 	Execute(w io.Writer, data any) error
 }
 
-func FileFromTemplate(name string, template Template, data any) File {
-	return &fileFromTmpl{name: name, template: template, data: data}
+// TemplatedFile will execute the template with the given data and write the resuls to the output file.
+func TemplatedFile(name string, template Template, data any) File {
+	return &templatedFile{name: name, template: template, data: data}
 }
 
-type fileFromTmpl struct {
+type tmplfunc func(w io.Writer, data any) error
+
+func (f tmplfunc) Execute(w io.Writer, data any) error {
+	return f(w, data)
+}
+
+func TemplatedFileStr(name string, templateStr string, data any) File {
+	return &templatedFile{name: name, template: tmplfunc(func(w io.Writer, data any) error {
+		t, err := template.New(name).Parse(templateStr)
+		if err != nil {
+			return err
+		}
+
+		return t.Execute(w, data)
+	}), data: data}
+}
+
+type templatedFile struct {
 	name     string
 	template Template
 	data     any
 }
 
-func (f *fileFromTmpl) Name() string {
+func (f *templatedFile) Name() string {
 	return f.name
 }
 
 // WriteTo implements [io.WriterTo]
-func (f *fileFromTmpl) WriteTo(w io.Writer) (int64, error) {
+func (f *templatedFile) WriteTo(w io.Writer) (int64, error) {
 	return 0, f.template.Execute(w, f.data)
 }
 
-func ModifyFile[E any](name string, parse func([]byte, any) error, mod func(*E) ([]byte, error)) File {
-	return &modFile[E]{
-		name:  name,
-		parse: parse,
-		mod:   mod,
+// ModifyFile can modify an existing file's contents.
+// [Generator.Generate] will return an error, if the file doesn't exist yet.
+func ModifyFile(name string, modifier func(contents []byte, w io.Writer) error) File {
+	return &modFile{
+		name:     name,
+		modifier: modifier,
 	}
 }
 
-type modFile[E any] struct {
-	name  string
-	parse func([]byte, any) error
-	mod   func(*E) ([]byte, error)
+type modFile struct {
+	name     string
+	modifier func(contents []byte, w io.Writer) error
 }
 
-func (f *modFile[E]) Name() string {
+func (f *modFile) Name() string {
 	return f.name
 }
 
-func (f *modFile[E]) IsNewFile() bool {
-	return false
+// WriteModifiedTo implements [WriterToModify].
+func (f *modFile) WriteModifiedTo(contents []byte, w io.Writer) error {
+	return f.modifier(contents, w)
 }
 
-// WriteTo implements [WriterToFile]
-func (f *modFile[E]) WriteToFile(rootFS WritableFS, filename string, w io.Writer) (int64, error) {
-	contents, err := rootFS.ReadFile(filename)
-	if err != nil {
-		if !errors.Is(err, os.ErrNotExist) {
-			return 0, err
-		}
-	}
-
-	var e E
-	if len(contents) != 0 {
-		err = f.parse(contents, &e)
+func ModifyMarshalledFunc[V any](unmarshal func([]byte, any) error, modify func(*V) ([]byte, error)) func(contents []byte, w io.Writer) error {
+	return func(contents []byte, w io.Writer) error {
+		var val V
+		err := unmarshal(contents, &val)
 		if err != nil {
-			return 0, err
+			return err
 		}
-	}
 
-	modified, err := f.mod(&e)
-	if err != nil {
-		return 0, err
-	}
+		modified, err := modify(&val)
+		if err != nil {
+			return err
+		}
 
-	n, err := w.Write(modified)
-	if err != nil {
-		return 0, err
+		_, err = w.Write(modified)
+		return err
 	}
-
-	return int64(n), nil
 }
