@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+// Render returns a textual representation of the file structure, primarily used for debugging.
 func Render(files ...File) string {
 	var b strings.Builder
 

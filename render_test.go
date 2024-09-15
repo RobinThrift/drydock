@@ -1,13 +1,13 @@
 package drydock
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestRender(t *testing.T) {
-
 	tt := []struct {
 		name  string
 		input []File
@@ -62,4 +62,37 @@ func TestRender(t *testing.T) {
 			assert.Equal(t, tt.exp, actual, actual)
 		})
 	}
+}
+
+func ExampleRender() {
+	files := Render(PlainFile("fileA", ""),
+		Dir("dirA", PlainFile("dirAFileA", "")),
+		Dir("dirB", PlainFile("dirBFileA", ""), PlainFile("dirBFileB", "")),
+		PlainFile("fileD", ""),
+		Dir("dirC", Dir("dirCdirA",
+			PlainFile("dirCdirAFileA", ""),
+			Dir("dirCdirADirA", Dir("dirCdirADirADirA",
+				PlainFile("dirCdirADirADirAFileA", ""),
+				PlainFile("dirCdirADirADirAFileB", ""),
+			)),
+		)))
+
+	fmt.Println(files)
+
+	// Output:
+	// .
+	// ├── fileA
+	// ├── dirA/
+	// │   └── dirAFileA
+	// ├── dirB/
+	// │   ├── dirBFileA
+	// │   └── dirBFileB
+	// ├── fileD
+	// └── dirC/
+	//     └── dirCdirA/
+	//         ├── dirCdirAFileA
+	//         └── dirCdirADirA/
+	//             └── dirCdirADirADirA/
+	//                 ├── dirCdirADirADirAFileA
+	//                 └── dirCdirADirADirAFileB
 }

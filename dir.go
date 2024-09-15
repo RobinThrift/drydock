@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+// Dir creates a new directory with the provided entries as direct children.
 func Dir(name string, entries ...File) Directory {
 	return &dir{name: name, entries: entries}
 }
