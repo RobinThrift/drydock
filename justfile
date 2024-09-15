@@ -1,25 +1,25 @@
-gobin := absolute_path(".gobin")
+local_bin := absolute_path(".bin")
 
 _default:
     @just --list
 
 test +flags="-failfast": _install-tools
-    {{ gobin }}/gotestsum --format short-verbose -- {{ flags }} ./... 
+    {{ local_bin }}/gotestsum --format short-verbose -- {{ flags }} ./... 
 
 alias tw := test-watch
 test-watch +flags="-failfast": _install-tools
-    {{ gobin }}/gotestsum --format short-verbose --watch -- {{ flags }} ./...
+    {{ local_bin }}/gotestsum --format short-verbose --watch -- {{ flags }} ./...
 
 test-ci format="short-verbose": _install-tools
-    {{ gobin }}/gotestsum --format {{ format }} --junitfile=test.junit.xml -- -timeout 10m ./...
+    {{ local_bin }}/gotestsum --format {{ format }} --junitfile=test.junit.xml -- -timeout 10m ./...
 
 lint: _install-tools
-    {{ gobin }}/staticcheck ./...
-    {{ gobin }}/golangci-lint run ./...
+    {{ local_bin }}/staticcheck ./...
+    {{ local_bin }}/golangci-lint run ./...
 
 lint-ci: _install-tools
-    {{ gobin }}/golangci-lint run --timeout 5m --out-format=junit-xml ./... > lint.junit.xml
-    {{ gobin }}/staticcheck ./...
+    {{ local_bin }}/golangci-lint run --timeout 5m --out-format=junit-xml ./... > lint.junit.xml
+    {{ local_bin }}/staticcheck ./...
 
 fmt:
 	@go fmt ./...
@@ -36,12 +36,12 @@ release tag:
     git push origin {{tag}}
 
 changelog tag:
-    git-cliff --config cliff.toml --prepend CHANGELOG.md --unreleased --tag {{ tag }}
+    git-cliff --config .tools/cliff.toml --prepend CHANGELOG.md --unreleased --tag {{ tag }}
 
 _install-tools:
-    @[ -f {{ gobin }}/golangci-lint ] || GOBIN={{ gobin }} go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
-    @just _install-tool gotestsum gotest.tools/gotestsum
+    @just _install-tool golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint
     @just _install-tool staticcheck honnef.co/go/tools/cmd/staticcheck
+    @just _install-tool gotestsum gotest.tools/gotestsum
 
 _install-tool bin mod:
-    @[ -f {{ gobin }}/{{bin}} ] || GOBIN={{ gobin }} go install -mod=readonly {{mod}}
+    @[ -f {{ local_bin }}/{{bin}} ] || (cd .tools && GOBIN={{ local_bin }} go install -mod=readonly {{mod}})
