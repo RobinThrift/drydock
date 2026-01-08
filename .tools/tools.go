@@ -4,7 +4,6 @@
 package drydock
 
 import (
+	_ "github.com/golangci/golangci-lint/v2/cmd/golangci-lint"
 	_ "gotest.tools/gotestsum"
-	_ "honnef.co/go/tools/cmd/staticcheck"
-	_ "github.com/golangci/golangci-lint/cmd/golangci-lint"
 )

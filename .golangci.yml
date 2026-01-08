@@ -1,52 +1,62 @@
-linters-settings:
-  varnamelen:
-    max-distance: 30
-    check-receiver: false
-    check-return: false
-    check-type-param: false
-    ignore-type-assert-ok: true
-    ignore-map-index-ok: true
-    ignore-chan-recv-ok: true
-    ignore-names:
-    - err
-    - id
-    - tx
-    - db
-    - tt
-    ignore-decls:
-    - t testing.T
-    - e error
-    - i int
-    - T any
-    - w http.ResponseWriter
-    - r *http.Request
-
+version: "2"
 linters:
-  disable:
-  - staticcheck
   enable:
-  - errcheck
-  - gosimple
-  - govet
-  - ineffassign
-  - typecheck
-  - unused
-  - asciicheck
-  - asasalint
-  - contextcheck
-  - containedctx
-  - exhaustive
-  - copyloopvar
-  - gocheckcompilerdirectives
-  - gocognit
-  - nestif
-  - prealloc
-  - predeclared
-  - reassign
-  - unconvert
-  - unparam
-  - varnamelen
-  - goconst
-  - misspell
-  - gocritic
-  - gocyclo
+    - asasalint
+    - asciicheck
+    - containedctx
+    - contextcheck
+    - copyloopvar
+    - exhaustive
+    - gocheckcompilerdirectives
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - misspell
+    - nestif
+    - prealloc
+    - predeclared
+    - reassign
+    - unconvert
+    - unparam
+    - varnamelen
+  settings:
+    varnamelen:
+      max-distance: 30
+      check-receiver: false
+      check-return: false
+      check-type-param: false
+      ignore-names:
+        - err
+        - id
+        - tx
+        - db
+        - tt
+      ignore-type-assert-ok: true
+      ignore-map-index-ok: true
+      ignore-chan-recv-ok: true
+      ignore-decls:
+        - t testing.T
+        - e error
+        - i int
+        - T any
+        - w http.ResponseWriter
+        - r *http.Request
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
