@@ -240,7 +240,7 @@ func (g *Generator) moveToOutput() error {
 
 		tmpfilepath := path.Join(g.tmpdir, file)
 
-		err := g.output.Rename(tmpfilepath, file)
+		err := g.output.Move(tmpfilepath, file)
 		if err != nil {
 			return fmt.Errorf("error moving file %s to %s: %w", tmpfilepath, file, err)
 		}
@@ -248,7 +248,7 @@ func (g *Generator) moveToOutput() error {
 
 	for _, file := range g.tmpmodified {
 		tmpfilepath := path.Join(g.tmpdir, file)
-		err := g.output.Rename(tmpfilepath, file)
+		err := g.output.Move(tmpfilepath, file)
 		if err != nil {
 			return fmt.Errorf("error moving (modified) file %s to %s: %w", tmpfilepath, file, err)
 		}

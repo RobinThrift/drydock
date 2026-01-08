@@ -41,7 +41,7 @@ func (fsys *MapFSOutputFS) Mkdir(name string) error {
 	return nil
 }
 
-func (fsys *MapFSOutputFS) Rename(oldpath string, newpath string) error {
+func (fsys *MapFSOutputFS) Move(oldpath string, newpath string) error {
 	if oldpath == newpath {
 		return &os.LinkError{Op: "rename", Old: oldpath, New: newpath, Err: syscall.EEXIST}
 	}

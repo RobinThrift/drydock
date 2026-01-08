@@ -14,8 +14,8 @@ type OutputFS interface {
 	// Mkdir creates a new directory and must return fs.ErrExist if the directory already exists.
 	Mkdir(name string) error
 
-	// Rename a given file or directory. Returned errors must be [os.LinkError] errors.
-	Rename(oldpath string, newpath string) error
+	// MoveFile moves the file or directory to the new location.
+	Move(oldpath string, newpath string) error
 
 	// Remove the file at path or directory, if the directory is empty.
 	Remove(path string) error
